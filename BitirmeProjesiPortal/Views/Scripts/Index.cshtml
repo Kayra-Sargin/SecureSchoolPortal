@@ -1,0 +1,45 @@
+@model List<string>
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-secondary text-white">
+            <h3 class="mb-0"><i class="bi bi-gear-wide-connected"></i> Public Utility Console</h3>
+            <small>Internal use only - Diagnostic scripts for server maintenance</small>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <h5 class="text-muted">Select Diagnostic Script</h5>
+                    <hr />
+                    <div class="list-group">
+                        @foreach (var script in Model)
+                        {
+                            <form asp-action="Execute" method="post" class="mb-2">
+                                <input type="hidden" name="scriptName" value="@script" />
+                                <button type="submit" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-file-earmark-code"></i> @script</span>
+                                    <span class="badge bg-primary rounded-pill">Run</span>
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <h5 class="text-muted">Console Output @(ViewBag.ExecutedScript != null ? "- " + ViewBag.ExecutedScript : "")</h5>
+                    <hr />
+                    <div class="bg-dark p-3 rounded" style="min-height: 250px; border: 2px solid #444;">
+                        @if (ViewBag.Result != null)
+                        {
+                            <pre class="text-info mb-0" style="white-space: pre-wrap;">@ViewBag.Result</pre>
+                        }
+                        else
+                        {
+                            <p class="text-muted italic">No script output to display. Please select a utility above.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

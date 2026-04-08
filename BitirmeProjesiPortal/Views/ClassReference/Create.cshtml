@@ -1,0 +1,53 @@
+﻿@model BitirmeProjesiPortal.Models.ClassReference
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Sınıf Oluştur</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (ViewBag.Message != null)
+            {
+                <div class="form-group" style="color:green">@ViewBag.Message</div>
+            }
+            <input type="hidden" asp-for="UserId" />
+
+            <div class="form-group mb-2">
+                <label asp-for="CRN" class="control-label"></label>
+                <input asp-for="CRN" class="form-control" />
+                <span asp-validation-for="CRN" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="ClassId" class="control-label">Class Code</label>
+                <select asp-for="ClassId" class="form-select"
+                        asp-items="@(new SelectList(ViewBag.ClassList, "Id", "ClassName"))">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="ClassId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Choose Students (Hold Ctrl/Cmd to select multiple)</label>
+                <select name="SelectedStudentIds" class="form-select" multiple="multiple" style="height: 150px;"
+                        asp-items="ViewBag.StudentList">
+                </select>
+            </div>
+
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-userId="@Model.UserId">Back to List</a>
+</div>

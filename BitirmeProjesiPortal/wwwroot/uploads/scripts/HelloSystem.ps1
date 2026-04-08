@@ -1,0 +1,1 @@
+Write-Output 'System Online. Ready for commands.'

@@ -1,0 +1,59 @@
+﻿@model BitirmeProjesiPortal.ViewModel.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+
+    .form-group {
+        padding: 3px;
+    }
+
+    .textBox {
+        width: 322px;
+        height: 40px;
+    }
+
+    .loginBtn {
+        width: 322px;
+        background-color: green;
+        color: rgba(236, 240, 241, 1);
+        border: none;
+        height: 40px;
+    }
+
+</style>
+
+
+<h1>Login</h1>
+
+<hr />
+<div class="row">
+    <div class="container">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserNameOrEmail" class="control-label"></label>
+                <input asp-for="UserNameOrEmail" class="form-control textBox" />
+                <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control textBox" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="loginBtn" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    Don't have an account <a asp-action="Registration">Go To Registration</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

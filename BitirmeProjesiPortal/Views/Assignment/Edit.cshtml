@@ -1,0 +1,75 @@
+﻿@model BitirmeProjesiPortal.Models.Assignment
+
+@{
+    bool isAdmin = User.IsInRole("Admin");
+}
+
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">@(isAdmin ? "Edit Assignment" : "Submit Assignment")</h2>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="form-group" style="color:green">@ViewBag.Message</div>
+        }
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ClassReferenceId" />
+        <input type="hidden" asp-for="AnswerFilePath" />
+
+        @if (isAdmin)
+        {
+            <div class="form-group mb-3">
+                <label asp-for="Header" class="control-label"></label>
+                <input asp-for="Header" class="form-control" />
+                <span asp-validation-for="Header" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+        }
+        else
+        {
+            <div class="form-group mb-3">
+                <label class="control-label fw-bold">Assignment Header:</label>
+                <div class="p-2 border bg-light rounded">@Model.Header</div>
+                <input type="hidden" asp-for="Header" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label fw-bold">Assignment Content:</label>
+                <div class="p-2 border bg-light rounded">@Model.Content</div>
+                <input type="hidden" asp-for="Content" />
+            </div>
+        }
+
+        <div class="form-group mb-3">
+            <label asp-for="AnswerFile" class="control-label">
+                @(isAdmin ? "Upload New Answer Key / File (Optional)" : "Upload Your Assignment Submission")
+            </label>
+            <input type="file" asp-for="AnswerFile" class="form-control" />
+            <span asp-validation-for="AnswerFile" class="text-danger"></span>
+
+            @if (!string.IsNullOrEmpty(Model.AnswerFilePath))
+            {
+                <div class="mt-2">
+                    <small class="text-muted">
+                        Current file: <a href="@Model.AnswerFilePath" target="_blank">Download/View</a>. <br />
+                        <em>Note: Uploading a new file will replace the existing one.</em>
+                    </small>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary">@(isAdmin ? "Update" : "Submit File")</button>
+        <div class="mt-2">
+            <a asp-action="Index" asp-route-classReferenceId="@Model.ClassReferenceId">Back to List</a>
+        </div>
+    </div>
+</form>

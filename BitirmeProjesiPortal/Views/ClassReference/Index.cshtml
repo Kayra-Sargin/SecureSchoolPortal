@@ -1,0 +1,112 @@
+﻿@model IEnumerable<BitirmeProjesiPortal.Models.ClassReference>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Class List</h2>
+        </div>
+        <div class="col-6 text-end">
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-controller="ClassReference" asp-action="Create" asp-route-userId="@ViewBag.UserId" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> &nbsp; Create New Class
+                </a>
+            }
+        </div>
+    </div>
+    <br /><br />
+
+    <table class="table table-bordered table-striped text-center" style="width:100%">
+        <thead>
+            <tr>
+                <th>Class Name</th>
+                <th>CRN</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>@obj.Class.ClassName</td>
+                    <td>@obj.CRN</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-controller="Announcement" asp-action="Index" asp-route-classReferenceId="@obj.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-megaphone"></i> Announcements
+                            </a>
+                            <a asp-controller="Assignment" asp-action="Index" asp-route-classReferenceId="@obj.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-backpack"></i> Assignments
+                            </a>
+                            <a asp-controller="ClassFile" asp-action="Index" asp-route-classReferenceId="@obj.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-archive"></i> Class Files
+                            </a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Grade" asp-action="Index" asp-route-classReferenceId="@obj.Id" class="btn btn-primary mx-2">
+                                    <i class="bi bi-file-check"></i> Grades
+                                </a>
+                                <a asp-controller="ClassReference" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-warning mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <button class="btn btn-danger" onclick="PrepareDelete(@obj.Id, '@obj.CRN')">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Warning!</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this class?<br />
+                <strong id="displayCrn"></strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete" onclick="DeleteClassReference()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let classReferenceId = null;
+
+        function PrepareDelete(id, crn) {
+            classReferenceId = id;
+            $("#displayCrn").text("CRN: " + crn);
+            $("#deleteModal").modal('show');
+        }
+
+        function DeleteClassReference() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "ClassReference")',
+                data: { id: classReferenceId },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert("The class could not be deleted. Try again.");
+                }
+            });
+            $("#deleteModal").modal('hide');
+        }
+    </script>
+}
