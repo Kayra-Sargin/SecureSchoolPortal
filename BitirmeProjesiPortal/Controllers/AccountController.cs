@@ -61,9 +61,10 @@ namespace BitirmeProjesiPortal.Controllers
             {
                 try
                 {
-                    string sqlQuery = $"SELECT * FROM UserAccounts WHERE (UserName = '{model.UserNameOrEmail}' OR Email = '{model.UserNameOrEmail}') AND Password = '{model.Password}'";
+                    var user = _context.UserAccounts
+                            .FirstOrDefault(u => (u.UserName == model.UserNameOrEmail || u.Email == model.UserNameOrEmail)
+                                              && u.Password == model.Password);
 
-                    var user = _context.UserAccounts.FromSqlRaw(sqlQuery).FirstOrDefault();
                     if (user != null)
                     {
 
