@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BitirmeProjesiPortal.Controllers
 {
@@ -17,6 +18,19 @@ namespace BitirmeProjesiPortal.Controllers
         [Authorize]
         public IActionResult Index(int classReferenceId)
         {
+            var currentUserId = User.FindFirstValue("Name");
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            bool hasAccess = _context.UserAccountClassReferences
+                                     .Any(e => e.ClassReferenceId == classReferenceId && e.User.UserName == currentUserId);
+            if (!hasAccess)
+            {
+                return Forbid();
+            }
+
             ViewBag.ClassReferenceId = classReferenceId;
             var announcements = _context.Announcements
                                         .Include(x => x.ClassReference.Class)
