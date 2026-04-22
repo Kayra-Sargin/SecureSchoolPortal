@@ -28,10 +28,19 @@ namespace BitirmeProjesiPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Registration(UserAccount account)
+        public IActionResult Registration(RegistrationViewModel accountVM)
         {
             if (ModelState.IsValid)
             {
+                var account = new UserAccount()
+                {
+                    FirstName = accountVM.FirstName,
+                    LastName = accountVM.LastName,
+                    Email = accountVM.Email,
+                    UserName = accountVM.UserName,
+                    Password = accountVM.Password,
+                    IsAdmin = false
+                };
                 _context.UserAccounts.Add(account);
 
                 try
@@ -44,10 +53,10 @@ namespace BitirmeProjesiPortal.Controllers
                 catch (DbUpdateException ex)
                 {
                     ModelState.AddModelError("", "Email veya Kullanıcı adı zaten var.");
-                    return View(account);
+                    return View(accountVM);
                 }
             }
-            return View(account);
+            return View(accountVM);
         }
 
         public IActionResult Login()

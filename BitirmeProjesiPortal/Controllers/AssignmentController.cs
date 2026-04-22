@@ -45,8 +45,17 @@ namespace BitirmeProjesiPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Assignment assignment)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && assignment != null)
             {
+                var allowedExtensions = new[] { ".jpeg", ".pdf", ".png", ".doc", ".docx" };
+                
+                var fileExtension = Path.GetExtension(assignment?.AnswerFile?.FileName);
+
+                if (!allowedExtensions.Contains(fileExtension))
+                {
+                    ModelState.AddModelError("", "Sadece .jpeg, .pdf, .png, .doc, .docx türünde yükleme yapılabilir");
+                    return View(assignment);
+                }
                 if (assignment.AnswerFile != null && assignment.AnswerFile.Length > 0)
                 {
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "assignments");
@@ -56,14 +65,16 @@ namespace BitirmeProjesiPortal.Controllers
                         Directory.CreateDirectory(uploadsFolder);
                     }
 
-                    string filePath = Path.Combine(uploadsFolder, assignment.AnswerFile.FileName);
+                    string trustedFileName = Guid.NewGuid().ToString() + fileExtension;
+
+                    string filePath = Path.Combine(uploadsFolder, trustedFileName);
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await assignment.AnswerFile.CopyToAsync(fileStream);
                     }
 
-                    assignment.AnswerFilePath = "/uploads/assignments/" + assignment.AnswerFile.FileName;
+                    assignment.AnswerFilePath = "/uploads/assignments/" + trustedFileName;
                 }
 
                 _context.Assignments.Add(assignment);
