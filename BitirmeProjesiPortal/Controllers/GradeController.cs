@@ -101,26 +101,31 @@ namespace BitirmeProjesiPortal.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public IActionResult PreviewEmailVulnerable([FromBody] EmailPreviewRequest request)
+        public IActionResult PreviewEmailSecure([FromBody] EmailPreviewRequest request)
         {
+            string secureTemplate = @"Merhaba {0},
+
+                                    Sınav notunuz: {1}
+
+                                    Öğretmeninizin Mesajı:
+                                    {2}
+
+                                    İyi çalışmalar.";
+
             try
             {
-                string vulnerableTemplate = request.Template.Replace("{{YORUM}}", request.CommentText ?? "");
-
-                IRazorEngine razorEngine = new RazorEngine();
-                IRazorEngineCompiledTemplate compiledTemplate = razorEngine.Compile(vulnerableTemplate);
-
-                string renderedResult = compiledTemplate.Run(new
-                {
-                    StudentName = request.StudentName ?? "Öğrenci",
-                    Grade = request.Grade ?? "0"
-                });
+                string renderedResult = string.Format(
+                    secureTemplate,
+                    request.StudentName ?? "Öğrenci",
+                    request.Grade ?? "0",
+                    request.CommentText ?? ""
+                );
 
                 return Json(new { success = true, preview = renderedResult });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, error = "Şablon derleme hatası: " + ex.Message });
+                return Json(new { success = false, error = "Şablon işleme hatası: " + ex.Message });
             }
         }
 

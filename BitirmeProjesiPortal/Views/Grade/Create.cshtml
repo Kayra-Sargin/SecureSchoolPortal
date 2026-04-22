@@ -78,7 +78,6 @@ Sınav notunuz: [Sınav Notu]
         async function generatePreview() {
             const gradeValue = document.getElementById('GradeBy100').value || "0";
             const commentText = document.getElementById('CommentInput').value;
-            const templateText = document.getElementById('emailTemplateInput').value;
 
             const studentSelect = document.getElementById('StudentId');
             let studentName = "Ali Yılmaz";
@@ -93,11 +92,10 @@ Sınav notunuz: [Sınav Notu]
             previewOutput.innerHTML = '<span class="text-muted">Önizleme yükleniyor...</span>';
 
             try {
-                const response = await fetch('/Grade/PreviewEmailVulnerable', {
+                const response = await fetch('@Url.Action("PreviewEmailSecure", "Grade")', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        Template: templateText,
                         StudentName: studentName,
                         Grade: gradeValue,
                         CommentText: commentText
