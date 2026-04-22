@@ -124,20 +124,39 @@ namespace BitirmeProjesiPortal.Controllers
 
                     if (assignment.AnswerFile != null && assignment.AnswerFile.Length > 0)
                     {
+                        var allowedExtensions = new[] { ".jpeg", ".pdf", ".png", ".doc", ".docx" };
+                        var fileExtension = Path.GetExtension(assignment.AnswerFile.FileName).ToLowerInvariant();
+
+                        if (!allowedExtensions.Contains(fileExtension))
+                        {
+                            ModelState.AddModelError("", "Sadece .jpeg, .pdf, .png, .doc, .docx türünde yükleme yapılabilir");
+                            return View(assignment);
+                        }
+
                         string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "assignments");
                         if (!Directory.Exists(uploadsFolder))
                         {
                             Directory.CreateDirectory(uploadsFolder);
                         }
 
-                        string filePath = Path.Combine(uploadsFolder, assignment.AnswerFile.FileName);
+                        string trustedFileName = Guid.NewGuid().ToString() + fileExtension;
+                        string filePath = Path.Combine(uploadsFolder, trustedFileName);
+
+                        if (!string.IsNullOrEmpty(existingAssignment.AnswerFilePath))
+                        {
+                            var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, existingAssignment.AnswerFilePath.TrimStart('/'));
+                            if (System.IO.File.Exists(oldPath))
+                            {
+                                System.IO.File.Delete(oldPath);
+                            }
+                        }
 
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
                             await assignment.AnswerFile.CopyToAsync(fileStream);
                         }
 
-                        existingAssignment.AnswerFilePath = "/uploads/assignments/" + assignment.AnswerFile.FileName;
+                        existingAssignment.AnswerFilePath = "/uploads/assignments/" + trustedFileName;
                     }
 
                     _context.Update(existingAssignment);
