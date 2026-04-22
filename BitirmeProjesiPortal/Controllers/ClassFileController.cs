@@ -41,15 +41,29 @@ namespace BitirmeProjesiPortal.Controllers
         {
             if (classFile.ClassReferenceId == 0 && Request.Form.ContainsKey("ClassReferenceId"))
             {
-                classFile.ClassReferenceId = Convert.ToInt32(Request.Form["ClassReferenceId"]);
+                if (int.TryParse(Request.Form["ClassReferenceId"], out int refId))
+                {
+                    classFile.ClassReferenceId = refId;
+                }
             }
+
             ModelState.Remove("ClassReference");
+
             if (ModelState.IsValid)
             {
-                classFile.UploadDate = DateTime.Now;
-
                 if (classFile.File != null && classFile.File.Length > 0)
                 {
+                    var allowedExtensions = new[] { ".jpg", ".png", ".pdf", ".docx", ".txt" };
+                    var extension = Path.GetExtension(classFile.File.FileName).ToLowerInvariant();
+
+                    if (string.IsNullOrEmpty(extension) || !allowedExtensions.Contains(extension))
+                    {
+                        ModelState.AddModelError("File", "Geçersiz dosya tipi.");
+                        return View(classFile);
+                    }
+
+                    string trustedFileNameForFileStorage = $"{Guid.NewGuid()}{extension}";
+
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "classfiles");
 
                     if (!Directory.Exists(uploadsFolder))
@@ -57,14 +71,15 @@ namespace BitirmeProjesiPortal.Controllers
                         Directory.CreateDirectory(uploadsFolder);
                     }
 
-                    string filePath = Path.Combine(uploadsFolder, classFile.File.FileName);
+                    string filePath = Path.Combine(uploadsFolder, trustedFileNameForFileStorage);
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await classFile.File.CopyToAsync(fileStream);
                     }
 
-                    classFile.FilePath = classFile.File.FileName;
+                    classFile.FilePath = trustedFileNameForFileStorage;
+                    classFile.UploadDate = DateTime.Now;
                 }
 
                 _context.ClassFiles.Add(classFile);
@@ -77,7 +92,7 @@ namespace BitirmeProjesiPortal.Controllers
                 }
                 catch (DbUpdateException ex)
                 {
-                    ModelState.AddModelError("", "Veritabanına kaydedilemedi: " + ex.Message);
+                    ModelState.AddModelError("", "Veritabanına kaydedilemedi.");
                 }
             }
             return View(classFile);
