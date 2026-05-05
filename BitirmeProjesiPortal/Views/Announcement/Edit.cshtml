@@ -1,33 +1,151 @@
 ﻿@model BitirmeProjesiPortal.Models.Announcement
 
+@{
+    ViewData["Title"] = "Edit Announcement";
+}
 
-<form method="post" asp-action="Edit">
-    <div class="border p-3 mt-4">
-        <div class="row pb-2">
-            <h2 class="text-primary">Edit Announcement</h2>
-        </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<style>
+    .content-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 32px;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+    }
 
-        @if (ViewBag.Message != null)
-        {
-            <div class="form-group" style="color:green">@ViewBag.Message</div>
+        .content-card h2 {
+            color: #c9d1d9;
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        <input type="hidden" asp-for="ClassReferenceId" />
 
-        <div class="form-group">
-            <label asp-for="Header" class="control-label"></label>
-            <input asp-for="Header" class="form-control" />
-            <span asp-validation-for="Header" class="text-danger"></span>
-        </div>
+        .content-card hr {
+            border-color: #30363d;
+            margin-bottom: 24px;
+        }
 
-        <div class="form-group">
-            <label asp-for="Content" class="control-label"></label>
-            <input asp-for="Content" class="form-control" />
-            <span asp-validation-for="Content" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary">Update</button>
-        <div>
-            <a asp-action="Index" asp-route-classReferenceId="@Model.ClassReferenceId">Back to List</a>
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group .control-label {
+            color: #8b949e;
+            margin-bottom: 8px;
+            font-weight: 500;
+            display: block;
+        }
+
+    .textBox {
+        background-color: #0d1117 !important;
+        border: 1px solid #30363d;
+        color: #c9d1d9 !important;
+        border-radius: 6px;
+        padding: 10px;
+    }
+
+        .textBox:focus {
+            background-color: #0d1117;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            outline: none;
+        }
+
+    .updateBtn {
+        background-color: #d29922;
+        color: #ffffff;
+        border: 1px solid rgba(240, 246, 252, 0.1);
+        border-radius: 6px;
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out;
+        width: 100%;
+    }
+
+        .updateBtn:hover {
+            background-color: #e3b341;
+            color: #ffffff;
+        }
+
+    .sys-message {
+        background-color: rgba(35, 134, 54, 0.1);
+        border: 1px solid #238636;
+        color: #3fb950;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    .backBtn {
+        display: inline-block;
+        margin-top: 24px;
+        color: #8b949e;
+        text-decoration: none;
+        transition: color 0.2s;
+        font-weight: 500;
+    }
+
+        .backBtn:hover {
+            color: #58a6ff;
+        }
+</style>
+
+<div class="row">
+    <div class="col-12 d-flex justify-content-center">
+        <div class="content-card">
+
+            <form method="post" asp-action="Edit">
+                <h2><i class="bi bi-pencil-square text-warning"></i> Edit Announcement</h2>
+                <hr />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                @if (ViewBag.Message != null)
+                {
+                    <div class="sys-message">
+                        <i class="bi bi-check-circle"></i> @ViewBag.Message
+                    </div>
+                }
+
+                <input type="hidden" asp-for="ClassReferenceId" />
+
+                <div class="form-group">
+                    <label asp-for="Header" class="control-label"></label>
+                    <input asp-for="Header" class="form-control textBox" />
+                    <span asp-validation-for="Header" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label"></label>
+                    <textarea asp-for="Content" class="form-control textBox" rows="6"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="updateBtn">
+                        <i class="bi bi-save2"></i> Update Record
+                    </button>
+                </div>
+
+                <div>
+                    <a asp-action="Index" asp-route-classReferenceId="@Model.ClassReferenceId" class="backBtn">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </form>
+
         </div>
     </div>
-</form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

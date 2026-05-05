@@ -31,7 +31,7 @@ namespace BitirmeProjesiPortal.Controllers
         [Authorize]
         public IActionResult Index(int classReferenceId)
         {
-            var currentUserId = User.FindFirstValue("Name");
+            var currentUserId = User.FindFirstValue(ClaimTypes.Name);
             if (currentUserId == null)
             {
                 return Forbid();
@@ -118,12 +118,12 @@ namespace BitirmeProjesiPortal.Controllers
         {
             string secureTemplate = @"Merhaba {0},
 
-                                    Sınav notunuz: {1}
+Sınav notunuz: {1}
 
-                                    Öğretmeninizin Mesajı:
-                                    {2}
+Öğretmeninizin Mesajı:
+{2}
 
-                                    İyi çalışmalar.";
+İyi çalışmalar.";
 
             try
             {

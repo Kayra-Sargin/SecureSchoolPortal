@@ -18,7 +18,7 @@ namespace BitirmeProjesiPortal.Controllers
         [Authorize]
         public IActionResult Index(int classReferenceId)
         {
-            var currentUserId = User.FindFirstValue("Name");
+            var currentUserId = User.FindFirstValue(ClaimTypes.Name);
             if (currentUserId == null)
             {
                 return Forbid();

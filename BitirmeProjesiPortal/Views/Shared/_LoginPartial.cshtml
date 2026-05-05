@@ -1,27 +1,92 @@
-﻿ @if (Context.User.Identity.Name != null){
-     <form asp-controller="Account" asp-action="Logout" method="post" id="LogOutForm" class="navbar-right">
-         <ul class="nav navbar-nav navbar-right">
-             <li>
-                <button type="button" class="btn disabled">
-                    Hello @Context.User.Identity.Name!
-                    @if (Context.User.IsInRole("Admin"))
-                    {
-                        <span style="background-color: red; color: white; padding: 3px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold;">
-                            ÖĞRETMEN
-                        </span>
-                    }
+﻿<style>
+    .user-greeting {
+        color: #c9d1d9;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .admin-badge {
+        background-color: rgba(218, 54, 51, 0.15);
+        color: #ff7b72;
+        border: 1px solid rgba(255, 123, 114, 0.4);
+        border-radius: 4px;
+        padding: 3px 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        box-shadow: 0 0 8px rgba(255, 123, 114, 0.2);
+    }
+
+    .logout-btn {
+        color: #8b949e !important;
+        font-weight: 500;
+        transition: color 0.2s ease-in-out;
+        cursor: pointer;
+    }
+
+        .logout-btn:hover {
+            color: #ff7b72 !important;
+        }
+
+    .auth-link {
+        color: #8b949e !important;
+        font-weight: 500;
+        transition: color 0.2s ease-in-out;
+    }
+
+        .auth-link:hover {
+            color: #ffffff !important;
+        }
+
+    .nav-login-btn {
+        background-color: #238636;
+        color: #ffffff !important;
+        border: 1px solid rgba(240, 246, 252, 0.1);
+        border-radius: 6px;
+        padding: 6px 16px !important;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        .nav-login-btn:hover {
+            background-color: #2ea043;
+        }
+</style>
+
+@if (Context.User.Identity.Name != null)
+{
+    <form asp-controller="Account" asp-action="Logout" method="post" id="LogOutForm" class="m-0">
+        <ul class="navbar-nav d-flex flex-row align-items-center gap-3">
+            <li class="nav-item d-flex align-items-center">
+                <span class="user-greeting">
+                    <i class="bi bi-person-circle"></i> Hello, @Context.User.Identity.Name!
+                </span>
+
+                @if (Context.User.IsInRole("Admin"))
+                {
+                    <span class="admin-badge ms-2">
+                        <i class="bi bi-shield-lock-fill"></i> ÖĞRETMEN
+                    </span>
+                }
+            </li>
+            <li class="nav-item">
+                <button type="submit" class="nav-link logout-btn border-0 bg-transparent">
+                    <i class="bi bi-box-arrow-right"></i> Log off
                 </button>
-             </li>
-             <li>
-                 <button type="submit" class="btn btn-link navbar-btn navbar-link text-dark">Log off</button>
-             </li>
-         </ul>
-     </form>
- }
+            </li>
+        </ul>
+    </form>
+}
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a class="nav-link text-dark" asp-controller="Account" asp-action="Registration">Registration</a></li>
-        <li><a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Log in</a></li>
+    <ul class="navbar-nav d-flex flex-row align-items-center gap-3">
+        <li class="nav-item">
+            <a class="nav-link auth-link" asp-controller="Account" asp-action="Registration">Registration</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-login-btn" asp-controller="Account" asp-action="Login">
+                <i class="bi bi-box-arrow-in-right"></i> Log in
+            </a>
+        </li>
     </ul>
 }

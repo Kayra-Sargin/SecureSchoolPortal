@@ -5,73 +5,166 @@
 }
 
 <style>
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+        padding-top: 20px;
+    }
+
+    .auth-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 32px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+        .auth-card h1 {
+            color: #c9d1d9;
+            font-size: 1.75rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .auth-card hr {
+            border-color: #30363d;
+            margin-bottom: 24px;
+        }
 
     .form-group {
-        padding: 3px;
+        margin-bottom: 16px;
     }
+
+        .form-group .control-label {
+            color: #8b949e;
+            margin-bottom: 8px;
+            font-weight: 500;
+            display: block;
+        }
 
     .textBox {
-        width: 322px;
-        height: 40px;
+        background-color: #0d1117 !important;
+        border: 1px solid #30363d;
+        color: #c9d1d9 !important;
+        border-radius: 6px;
+        height: 44px;
     }
 
-    .loginBtn {
-        width: 322px;
-        background-color: green;
-        color: rgba(236, 240, 241, 1);
-        border: none;
-        height: 40px;
+        .textBox:focus {
+            background-color: #0d1117;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            outline: none;
+        }
+
+    .registerBtn {
+        width: 100%;
+        background-color: #238636;
+        color: #ffffff;
+        border: 1px solid rgba(240, 246, 252, 0.1);
+        border-radius: 6px;
+        height: 44px;
+        font-weight: 600;
+        margin-top: 10px;
+        transition: background-color 0.2s ease-in-out;
     }
 
+        .registerBtn:hover {
+            background-color: #2ea043;
+        }
+
+    .sys-message {
+        background-color: rgba(35, 134, 54, 0.1);
+        border: 1px solid #238636;
+        color: #3fb950;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .auth-links {
+        text-align: center;
+        margin-top: 24px;
+        color: #8b949e;
+        font-size: 0.9rem;
+    }
+
+        .auth-links a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .auth-links a:hover {
+                text-decoration: underline;
+            }
 </style>
 
-<h1>Registration</h1>
+<div class="row auth-wrapper">
+    <div class="auth-card">
+        <h1><i class="bi bi-person-plus"></i> Create Profile</h1>
+        <hr />
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
         <form asp-action="Registration">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
             @if (ViewBag.Message != null)
             {
-                <div class="form-group" style="color:green">@ViewBag.Message</div>
+                <div class="sys-message">
+                    <i class="bi bi-check-circle"></i> @ViewBag.Message
+                </div>
             }
+
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control textBox" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control textBox" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
+                <input asp-for="UserName" class="form-control textBox" autocomplete="username" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control textBox" autocomplete="email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control textBox" type="password" autocomplete="new-password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Register" class="loginBtn" />
+                <button type="submit" class="registerBtn">Register</button>
             </div>
         </form>
+
+        <div class="auth-links">
+            Already have an account? <br />
+            <a asp-action="Login">Go To Login</a>
+        </div>
     </div>
 </div>
 
-<div>
-    Already have an account <a asp-action="Login">Go To Login</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

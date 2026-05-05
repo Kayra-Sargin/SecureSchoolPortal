@@ -1,43 +1,149 @@
 ﻿@model BitirmeProjesiPortal.Models.Announcement
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Announcement";
 }
 
-<h1>Create New Announcement</h1>
+<style>
+    .content-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 32px;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+    }
 
-<hr />
+        .content-card h1 {
+            color: #c9d1d9;
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .content-card hr {
+            border-color: #30363d;
+            margin-bottom: 24px;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group .control-label {
+            color: #8b949e;
+            margin-bottom: 8px;
+            font-weight: 500;
+            display: block;
+        }
+
+    .textBox {
+        background-color: #0d1117 !important;
+        border: 1px solid #30363d;
+        color: #c9d1d9 !important;
+        border-radius: 6px;
+        padding: 10px;
+    }
+
+        .textBox:focus {
+            background-color: #0d1117;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            outline: none;
+        }
+
+    .actionBtn {
+        background-color: #1f6feb;
+        color: #ffffff;
+        border: 1px solid rgba(240, 246, 252, 0.1);
+        border-radius: 6px;
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out;
+        width: 100%;
+    }
+
+        .actionBtn:hover {
+            background-color: #388bfd;
+            color: #ffffff;
+        }
+
+    .sys-message {
+        background-color: rgba(35, 134, 54, 0.1);
+        border: 1px solid #238636;
+        color: #3fb950;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    .backBtn {
+        display: inline-block;
+        margin-top: 24px;
+        color: #8b949e;
+        text-decoration: none;
+        transition: color 0.2s;
+        font-weight: 500;
+    }
+
+        .backBtn:hover {
+            color: #58a6ff;
+        }
+</style>
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-12 d-flex justify-content-center">
+        <div class="content-card">
+            <h1><i class="bi bi-megaphone text-primary"></i> Create Announcement</h1>
+            <hr />
 
-            @if (ViewBag.Message != null)
-            {
-                <div class="form-group" style="color:green">@ViewBag.Message</div>
-            }
-            <input type="hidden" asp-for="ClassReferenceId" />
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="Header" class="control-label"></label>
-                <input asp-for="Header" class="form-control" />
-                <span asp-validation-for="Header" class="text-danger"></span>
+                @if (ViewBag.Message != null)
+                {
+                    <div class="sys-message">
+                        <i class="bi bi-check-circle"></i> @ViewBag.Message
+                    </div>
+                }
+
+                <input type="hidden" asp-for="ClassReferenceId" />
+
+                <div class="form-group">
+                    <label asp-for="Header" class="control-label"></label>
+                    <input asp-for="Header" class="form-control textBox" placeholder="Enter announcement title..." />
+                    <span asp-validation-for="Header" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label"></label>
+                    <textarea asp-for="Content" class="form-control textBox" rows="6" placeholder="Write the announcement details here..."></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="actionBtn">
+                        <i class="bi bi-send-fill"></i> Publish Announcement
+                    </button>
+                </div>
+            </form>
+
+            <div>
+                <a asp-action="Index" asp-route-classReferenceId="@Model.ClassReferenceId" class="backBtn">
+                    <i class="bi bi-arrow-left"></i> Back to List
+                </a>
             </div>
-
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-
-            <br />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index" asp-route-classReferenceId="@Model.ClassReferenceId">Back to List</a>
-</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

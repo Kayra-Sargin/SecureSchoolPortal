@@ -4,55 +4,193 @@
     ViewData["Title"] = "Not Gir";
 }
 
-<h2 class="text-primary">Enter Grade</h2>
-<hr />
+<style>
+    .page-header {
+        color: #c9d1d9;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+        margin-top: 10px;
+    }
 
-<div class="row">
-    <div class="col-md-5">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ClassReferenceId" />
+    .content-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 28px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        height: 100%;
+    }
 
-            <div class="form-group mb-3">
-                <label asp-for="StudentId" class="control-label fw-bold">Student</label>
-                <select asp-for="StudentId" id="StudentId" class="form-select" asp-items="ViewBag.Students">
-                    <option value="">-- Select Student --</option>
-                </select>
-            </div>
+        .content-card h3 {
+            color: #c9d1d9;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-            <div class="form-group mb-3">
-                <label asp-for="ExamTypeId" class="control-label fw-bold">Exam Type</label>
-                <select asp-for="ExamTypeId" class="form-select" asp-items="ViewBag.ExamTypes">
-                    <option value="">-- Select Exam Type --</option>
-                </select>
-            </div>
+        .content-card hr {
+            border-color: #30363d;
+            margin-bottom: 24px;
+        }
 
-            <div class="form-group mb-3">
-                <label asp-for="GradeBy100" class="control-label fw-bold">Grade</label>
-                <input asp-for="GradeBy100" id="GradeBy100" type="number" class="form-control" />
-            </div>
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-            <div class="form-group mb-4">
-                <label asp-for="Comment" class="control-label fw-bold text-danger">Teacher's Comment</label>
-                <textarea asp-for="Comment" id="CommentInput" class="form-control" rows="3" placeholder="Öğrenciye iletilecek yorumu buraya yazın..."></textarea>
-            </div>
+    .control-label {
+        color: #8b949e;
+        margin-bottom: 8px;
+        font-weight: 500;
+        display: block;
+    }
 
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
-            </div>
-        </form>
+        .control-label.text-danger {
+            color: #ff7b72 !important;
+        }
+
+    .textBox {
+        background-color: #0d1117 !important;
+        border: 1px solid #30363d;
+        color: #c9d1d9 !important;
+        border-radius: 6px;
+        padding: 10px;
+        width: 100%;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+        .textBox:focus {
+            background-color: #0d1117;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            outline: none;
+        }
+
+        .textBox[readonly] {
+            background-color: #21262d !important;
+            color: #8b949e !important;
+            border-color: #30363d;
+            cursor: not-allowed;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+
+    .actionBtn {
+        background-color: #1f6feb;
+        color: #ffffff;
+        border: 1px solid rgba(240, 246, 252, 0.1);
+        border-radius: 6px;
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out;
+        width: 100%;
+    }
+
+        .actionBtn:hover {
+            background-color: #388bfd;
+            color: #ffffff;
+        }
+
+    .previewBtn {
+        background-color: transparent;
+        color: #58a6ff;
+        border: 1px solid #58a6ff;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+
+        .previewBtn:hover {
+            background-color: #58a6ff;
+            color: #ffffff;
+        }
+
+    .preview-box {
+        margin-top: 20px;
+        padding: 16px;
+        background-color: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        color: #c9d1d9;
+        display: none;
+    }
+
+        .preview-box.success-state {
+            border-color: #238636;
+            background-color: rgba(35, 134, 54, 0.05);
+        }
+
+        .preview-box.error-state {
+            border-color: #da3633;
+            background-color: rgba(218, 54, 51, 0.05);
+            color: #ff7b72;
+        }
+
+    .text-muted {
+        color: #8b949e !important;
+    }
+</style>
+
+<h2 class="page-header"><i class="bi bi-file-check-fill text-primary"></i> Enter Grade</h2>
+
+<div class="row align-items-stretch">
+    <div class="col-md-5 mb-4 mb-md-0">
+        <div class="content-card">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="ClassReferenceId" />
+
+                <div class="form-group">
+                    <label asp-for="StudentId" class="control-label"><i class="bi bi-person"></i> Student</label>
+                    <select asp-for="StudentId" id="StudentId" class="form-select textBox" asp-items="ViewBag.Students">
+                        <option value="">-- Select Student --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ExamTypeId" class="control-label"><i class="bi bi-card-text"></i> Exam Type</label>
+                    <select asp-for="ExamTypeId" class="form-select textBox" asp-items="ViewBag.ExamTypes">
+                        <option value="">-- Select Exam Type --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GradeBy100" class="control-label"><i class="bi bi-123"></i> Grade</label>
+                    <input asp-for="GradeBy100" id="GradeBy100" type="number" class="form-control textBox" />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="Comment" class="control-label text-danger"><i class="bi bi-chat-left-text"></i> Teacher's Comment</label>
+                    <textarea asp-for="Comment" id="CommentInput" class="form-control textBox" rows="3" placeholder="Öğrenciye iletilecek yorumu buraya yazın..."></textarea>
+                </div>
+
+                <div class="form-group mt-auto">
+                    <button type="submit" class="actionBtn">
+                        <i class="bi bi-check2-circle"></i> Submit Grade
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="col-md-7">
-        <div class="card border-info">
-            <div class="card-header bg-info text-white">
-                <i class="bi bi-envelope"></i> E-posta Önizleme Sistemi
-            </div>
-            <div class="card-body">
-                <p class="text-muted small">Öğrenciye gidecek mail şablonu. <strong>{{YORUM}}</strong> alanı, sol taraftaki öğretmen yorumu ile otomatik değiştirilir.</p>
+        <div class="content-card" style="border-color: #1f6feb;">
+            <h3><i class="bi bi-envelope text-primary"></i> E-posta Önizleme Sistemi</h3>
+            <hr />
 
-                <div class="form-group">
-                    <textarea id="emailTemplateInput" class="form-control bg-light" rows="5" style="font-family: monospace;" readonly>Merhaba [Öğrenci Adı],
+            <p class="text-muted small mb-3">
+                <i class="bi bi-info-circle"></i> Öğrenciye gidecek mail şablonu.
+                <strong class="text-light">{{YORUM}}</strong> alanı, sol taraftaki öğretmen yorumu ile otomatik değiştirilir.
+            </p>
+
+            <div class="form-group">
+                <textarea id="emailTemplateInput" class="form-control textBox" rows="6" readonly>Merhaba [Öğrenci Adı],
 
 Sınav notunuz: [Sınav Notu]
 
@@ -60,14 +198,17 @@ Sınav notunuz: [Sınav Notu]
 {{YORUM}}
 
 İyi çalışmalar.</textarea>
-                </div>
+            </div>
 
-                <button type="button" class="btn btn-outline-info mt-3" onclick="generatePreview()">Mail Önizlemesini Gör</button>
+            <button type="button" class="previewBtn mt-2" onclick="generatePreview()">
+                <i class="bi bi-eye"></i> Mail Önizlemesini Gör
+            </button>
 
-                <div id="previewContainer" class="mt-3 p-3 bg-light border rounded" style="display: none;">
-                    <strong>Gönderilecek E-posta:</strong>
-                    <pre id="previewOutput" class="mb-0 mt-2" style="white-space: pre-wrap; font-family: inherit; font-size: 14px;"></pre>
-                </div>
+            <div id="previewContainer" class="preview-box">
+                <strong class="d-block mb-2 text-light border-bottom border-secondary pb-2">
+                    <i class="bi bi-send"></i> Gönderilecek E-posta:
+                </strong>
+                <pre id="previewOutput" class="mb-0 mt-2" style="white-space: pre-wrap; font-family: monospace; font-size: 14px;"></pre>
             </div>
         </div>
     </div>
@@ -89,7 +230,8 @@ Sınav notunuz: [Sınav Notu]
             const previewOutput = document.getElementById('previewOutput');
 
             previewContainer.style.display = 'block';
-            previewOutput.innerHTML = '<span class="text-muted">Önizleme yükleniyor...</span>';
+            previewContainer.className = 'preview-box';
+            previewOutput.innerHTML = '<span class="text-muted"><i class="bi bi-hourglass-split"></i> Önizleme yükleniyor...</span>';
 
             try {
                 const response = await fetch('@Url.Action("PreviewEmailSecure", "Grade")', {
@@ -106,13 +248,14 @@ Sınav notunuz: [Sınav Notu]
 
                 if (data.success) {
                     previewOutput.innerText = data.preview;
-                    previewContainer.className = 'mt-3 p-3 bg-light border border-success rounded';
+                    previewContainer.className = 'preview-box success-state';
                 } else {
                     previewOutput.innerText = data.error;
-                    previewContainer.className = 'mt-3 p-3 bg-white border border-danger rounded text-danger';
+                    previewContainer.className = 'preview-box error-state';
                 }
             } catch (error) {
                 previewOutput.innerText = "Sunucuya bağlanılamadı.";
+                previewContainer.className = 'preview-box error-state';
             }
         }
     </script>

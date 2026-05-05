@@ -21,7 +21,7 @@ namespace BitirmeProjesiPortal.Controllers
         [Authorize]
         public IActionResult Index(int classReferenceId)
         {
-            var currentUserId = User.FindFirstValue("Name");
+            var currentUserId = User.FindFirstValue(ClaimTypes.Name);
             if (currentUserId == null)
             {
                 return Forbid();
@@ -75,8 +75,6 @@ namespace BitirmeProjesiPortal.Controllers
                         return View(classFile);
                     }
 
-                    string trustedFileNameForFileStorage = $"{Guid.NewGuid()}{extension}";
-
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "classfiles");
 
                     if (!Directory.Exists(uploadsFolder))
@@ -84,14 +82,14 @@ namespace BitirmeProjesiPortal.Controllers
                         Directory.CreateDirectory(uploadsFolder);
                     }
 
-                    string filePath = Path.Combine(uploadsFolder, trustedFileNameForFileStorage);
+                    string filePath = Path.Combine(uploadsFolder, classFile.File.FileName);
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await classFile.File.CopyToAsync(fileStream);
                     }
 
-                    classFile.FilePath = trustedFileNameForFileStorage;
+                    classFile.FilePath = classFile.File.FileName;
                     classFile.UploadDate = DateTime.Now;
                 }
 
@@ -119,7 +117,9 @@ namespace BitirmeProjesiPortal.Controllers
             {
                 if (!string.IsNullOrEmpty(classFile.FilePath))
                 {
-                    string physicalPath = Path.Combine(_webHostEnvironment.WebRootPath, classFile.FilePath.TrimStart('/'));
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "classfiles");
+                    string physicalPath = Path.Combine(uploadsFolder, classFile.FilePath);
+
                     if (System.IO.File.Exists(physicalPath))
                     {
                         System.IO.File.Delete(physicalPath);
@@ -138,16 +138,18 @@ namespace BitirmeProjesiPortal.Controllers
         {
             if (string.IsNullOrEmpty(fileName))
             {
-                return BadRequest("Path is required.");
+                return BadRequest("FileName parametresi gerekli.");
             }
 
-            string fullPath = fileName;
+            string safeFileName = Path.GetFileName(fileName);
+
+            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "classfiles");
+            string fullPath = Path.Combine(uploadsFolder, safeFileName);
+
             if (!System.IO.File.Exists(fullPath))
             {
-                return NotFound($"The server cannot find the file at: {fullPath}");
+                return NotFound("Bu dosya mevcut değil.");
             }
-
-            string downloadName = Path.GetFileName(fullPath);
 
             var provider = new FileExtensionContentTypeProvider();
             if (!provider.TryGetContentType(fullPath, out string contentType))
@@ -155,7 +157,7 @@ namespace BitirmeProjesiPortal.Controllers
                 contentType = "application/octet-stream";
             }
 
-            return PhysicalFile(fullPath, contentType, downloadName);
+            return PhysicalFile(fullPath, contentType, safeFileName);
         }
 
     }

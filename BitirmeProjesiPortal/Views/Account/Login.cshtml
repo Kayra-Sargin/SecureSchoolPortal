@@ -5,55 +5,129 @@
 }
 
 <style>
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 60vh;
+    }
+
+    .login-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 32px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+        .login-card h1 {
+            color: #c9d1d9;
+            font-size: 1.75rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-card hr {
+            border-color: #30363d;
+            margin-bottom: 24px;
+        }
 
     .form-group {
-        padding: 3px;
+        margin-bottom: 16px;
     }
+
+        .form-group .control-label {
+            color: #8b949e;
+            margin-bottom: 8px;
+            font-weight: 500;
+            display: block;
+        }
 
     .textBox {
-        width: 322px;
-        height: 40px;
+        background-color: #0d1117 !important;
+        border: 1px solid #30363d;
+        color: #c9d1d9 !important;
+        border-radius: 6px;
+        height: 44px;
     }
+
+        .textBox:focus {
+            background-color: #0d1117;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            outline: none;
+        }
 
     .loginBtn {
-        width: 322px;
-        background-color: green;
-        color: rgba(236, 240, 241, 1);
-        border: none;
-        height: 40px;
+        width: 100%;
+        background-color: #238636;
+        color: #ffffff;
+        border: 1px solid rgba(240, 246, 252, 0.1);
+        border-radius: 6px;
+        height: 44px;
+        font-weight: 600;
+        margin-top: 10px;
+        transition: background-color 0.2s ease-in-out;
     }
 
+        .loginBtn:hover {
+            background-color: #2ea043;
+        }
+
+    .auth-links {
+        text-align: center;
+        margin-top: 24px;
+        color: #8b949e;
+        font-size: 0.9rem;
+    }
+
+        .auth-links a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .auth-links a:hover {
+                text-decoration: underline;
+            }
 </style>
 
+<div class="row login-wrapper">
+    <div class="login-card">
+        <h1><i class="bi bi-shield-lock"></i> Login</h1>
+        <hr />
 
-<h1>Login</h1>
-
-<hr />
-<div class="row">
-    <div class="container">
         <form asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
             <div class="form-group">
                 <label asp-for="UserNameOrEmail" class="control-label"></label>
-                <input asp-for="UserNameOrEmail" class="form-control textBox" />
+                <input asp-for="UserNameOrEmail" class="form-control textBox" autocomplete="username" />
                 <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control textBox" />
+                <input asp-for="Password" class="form-control textBox" type="password" autocomplete="current-password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Login" class="loginBtn" />
+                <button type="submit" class="loginBtn">Login</button>
             </div>
         </form>
+
+        <div class="auth-links">
+            Don't have an account? <br />
+            <a asp-action="Registration">Go To Registration</a>
+        </div>
     </div>
 </div>
 
-<div>
-    Don't have an account <a asp-action="Registration">Go To Registration</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -27,7 +27,7 @@ namespace BitirmeProjesiPortal.Controllers
         [Authorize]
         public IActionResult Index(int classReferenceId)
         {
-            var currentUserId = User.FindFirstValue("Name");
+            var currentUserId = User.FindFirstValue(ClaimTypes.Name);
             if (currentUserId == null)
             {
                 return Forbid();
@@ -63,15 +63,16 @@ namespace BitirmeProjesiPortal.Controllers
             {
                 var allowedExtensions = new[] { ".jpeg", ".pdf", ".png", ".doc", ".docx" };
                 
-                var fileExtension = Path.GetExtension(assignment?.AnswerFile?.FileName);
-
-                if (!allowedExtensions.Contains(fileExtension))
-                {
-                    ModelState.AddModelError("", "Sadece .jpeg, .pdf, .png, .doc, .docx türünde yükleme yapılabilir");
-                    return View(assignment);
-                }
                 if (assignment.AnswerFile != null && assignment.AnswerFile.Length > 0)
                 {
+                    var fileExtension = Path.GetExtension(assignment?.AnswerFile?.FileName);
+
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        ModelState.AddModelError("", "Sadece .jpeg, .pdf, .png, .doc, .docx türünde yükleme yapılabilir");
+                        return View(assignment);
+                    }
+
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "assignments");
 
                     if (!Directory.Exists(uploadsFolder))
