@@ -6,8 +6,8 @@
 
 <style>
     .page-header {
-        color: #c9d1d9;
-        font-weight: 600;
+        color: #1e293b;
+        font-weight: 700;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -16,16 +16,29 @@
     }
 
     .content-card {
-        background-color: #161b22;
-        border: 1px solid #30363d;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
         border-radius: 8px;
         padding: 28px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         height: 100%;
+        position: relative;
     }
 
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3b82f6, #20c997);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
         .content-card h3 {
-            color: #c9d1d9;
+            color: #1e293b;
             font-size: 1.4rem;
             margin-bottom: 16px;
             display: flex;
@@ -34,7 +47,7 @@
         }
 
         .content-card hr {
-            border-color: #30363d;
+            border-color: #e2e8f0;
             margin-bottom: 24px;
         }
 
@@ -43,20 +56,20 @@
     }
 
     .control-label {
-        color: #8b949e;
+        color: #334155;
         margin-bottom: 8px;
         font-weight: 500;
         display: block;
     }
 
         .control-label.text-danger {
-            color: #ff7b72 !important;
+            color: #ef4444 !important;
         }
 
     .textBox {
-        background-color: #0d1117 !important;
-        border: 1px solid #30363d;
-        color: #c9d1d9 !important;
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1;
+        color: #1e293b !important;
         border-radius: 6px;
         padding: 10px;
         width: 100%;
@@ -64,41 +77,42 @@
     }
 
         .textBox:focus {
-            background-color: #0d1117;
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
             outline: none;
         }
 
         .textBox[readonly] {
-            background-color: #21262d !important;
-            color: #8b949e !important;
-            border-color: #30363d;
+            background-color: #f1f5f9 !important;
+            color: #475569 !important;
+            border-color: #cbd5e1;
             cursor: not-allowed;
             font-family: monospace;
             font-size: 0.95rem;
         }
 
     .actionBtn {
-        background-color: #1f6feb;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
         color: #ffffff;
-        border: 1px solid rgba(240, 246, 252, 0.1);
+        border: none;
         border-radius: 6px;
         padding: 10px 24px;
         font-weight: 600;
-        transition: background-color 0.2s ease-in-out;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
         width: 100%;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
     }
 
         .actionBtn:hover {
-            background-color: #388bfd;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
             color: #ffffff;
         }
 
     .previewBtn {
         background-color: transparent;
-        color: #58a6ff;
-        border: 1px solid #58a6ff;
+        color: #3b82f6;
+        border: 1px solid #3b82f6;
         border-radius: 6px;
         padding: 8px 16px;
         font-weight: 500;
@@ -107,37 +121,38 @@
     }
 
         .previewBtn:hover {
-            background-color: #58a6ff;
+            background-color: #3b82f6;
             color: #ffffff;
         }
 
     .preview-box {
         margin-top: 20px;
         padding: 16px;
-        background-color: #0d1117;
-        border: 1px solid #30363d;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
         border-radius: 6px;
-        color: #c9d1d9;
+        color: #1e293b;
         display: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
 
         .preview-box.success-state {
-            border-color: #238636;
-            background-color: rgba(35, 134, 54, 0.05);
+            border-color: #10b981;
+            background-color: #ecfdf5;
         }
 
         .preview-box.error-state {
-            border-color: #da3633;
-            background-color: rgba(218, 54, 51, 0.05);
-            color: #ff7b72;
+            border-color: #ef4444;
+            background-color: #fef2f2;
+            color: #b91c1c;
         }
 
     .text-muted {
-        color: #8b949e !important;
+        color: #64748b !important;
     }
 </style>
 
-<h2 class="page-header"><i class="bi bi-file-check-fill text-primary"></i> Enter Grade</h2>
+<h2 class="page-header"><i class="bi bi-file-check-fill" style="color: #3b82f6;"></i> Enter Grade</h2>
 
 <div class="row align-items-stretch">
     <div class="col-md-5 mb-4 mb-md-0">
@@ -180,13 +195,18 @@
     </div>
 
     <div class="col-md-7">
-        <div class="content-card" style="border-color: #1f6feb;">
-            <h3><i class="bi bi-envelope text-primary"></i> E-posta Önizleme Sistemi</h3>
+        <div class="content-card" style="border-color: #3b82f6;">
+            <style>
+                .col-md-7 .content-card::before {
+                    background: #3b82f6; /* Solid blue accent for the preview side */
+                }
+            </style>
+            <h3><i class="bi bi-envelope" style="color: #3b82f6;"></i> E-posta Önizleme Sistemi</h3>
             <hr />
 
             <p class="text-muted small mb-3">
                 <i class="bi bi-info-circle"></i> Öğrenciye gidecek mail şablonu.
-                <strong class="text-light">{{YORUM}}</strong> alanı, sol taraftaki öğretmen yorumu ile otomatik değiştirilir.
+                <strong style="color: #1e293b;">{{YORUM}}</strong> alanı, sol taraftaki öğretmen yorumu ile otomatik değiştirilir.
             </p>
 
             <div class="form-group">
@@ -205,10 +225,10 @@ Sınav notunuz: [Sınav Notu]
             </button>
 
             <div id="previewContainer" class="preview-box">
-                <strong class="d-block mb-2 text-light border-bottom border-secondary pb-2">
+                <strong class="d-block mb-2 border-bottom pb-2" style="color: #1e293b; border-color: #cbd5e1 !important;">
                     <i class="bi bi-send"></i> Gönderilecek E-posta:
                 </strong>
-                <pre id="previewOutput" class="mb-0 mt-2" style="white-space: pre-wrap; font-family: monospace; font-size: 14px;"></pre>
+                <pre id="previewOutput" class="mb-0 mt-2" style="white-space: pre-wrap; font-family: monospace; font-size: 14px; color: #334155;"></pre>
             </div>
         </div>
     </div>

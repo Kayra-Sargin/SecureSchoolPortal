@@ -6,134 +6,157 @@
 
 <style>
     .page-header {
-        color: #c9d1d9;
-        font-weight: 600;
+        color: #1e293b;
+        font-weight: 700;
         display: flex;
         align-items: center;
         gap: 10px;
     }
 
     .createBtn {
-        background-color: #1f6feb;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
         color: #ffffff;
-        border: 1px solid rgba(240, 246, 252, 0.1);
+        border: none;
         border-radius: 6px;
         padding: 8px 16px;
         font-weight: 600;
-        transition: background-color 0.2s ease-in-out;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
         text-decoration: none;
         display: inline-block;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
     }
 
         .createBtn:hover {
-            background-color: #388bfd;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
             color: #ffffff;
         }
 
     .table-container {
-        background-color: #161b22;
-        border: 1px solid #30363d;
-        border-radius: 8px;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
         padding: 16px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
         overflow-x: auto;
     }
 
-    .dark-table {
-        color: #c9d1d9;
+    .light-table {
+        color: #334155;
         margin-bottom: 0;
     }
 
-        .dark-table th {
-            background-color: #21262d;
-            color: #8b949e;
-            border-bottom: 2px solid #30363d;
+        .light-table th {
+            background-color: #f8fafc;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
             border-top: none;
             font-weight: 600;
-            padding: 12px;
+            padding: 14px 12px;
         }
 
-        .dark-table td {
+        .light-table td {
             background-color: transparent;
-            border-bottom: 1px solid #30363d;
+            border-bottom: 1px solid #e2e8f0;
             vertical-align: middle;
-            padding: 12px;
+            padding: 14px 12px;
         }
 
-        .dark-table tbody tr {
+        .light-table tbody tr {
             transition: background-color 0.15s ease-in-out;
         }
 
-            .dark-table tbody tr:hover {
-                background-color: #21262d;
+            .light-table tbody tr:hover {
+                background-color: #f1f5f9;
             }
 
+    .crn-badge {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        font-size: 0.9rem;
+        padding: 6px 10px;
+        border-radius: 6px;
+    }
+
     .editBtn {
-        background-color: #d29922;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
         color: #ffffff;
         border: none;
         border-radius: 6px;
         padding: 6px 12px;
-        font-size: 0.9rem;
-        transition: background-color 0.2s;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
     }
 
         .editBtn:hover {
-            background-color: #e3b341;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
             color: #ffffff;
         }
 
     .deleteBtn {
-        background-color: #da3633;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
         color: #ffffff;
         border: none;
         border-radius: 6px;
         padding: 6px 12px;
-        font-size: 0.9rem;
-        transition: background-color 0.2s;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
     }
 
         .deleteBtn:hover {
-            background-color: #f85149;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
             color: #ffffff;
         }
 
     .modal-content {
-        background-color: #161b22;
-        color: #c9d1d9;
-        border: 1px solid #30363d;
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+        background-color: #ffffff;
+        color: #1e293b;
+        border: none;
+        border-top: 4px solid #ef4444;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
     }
 
     .modal-header {
-        border-bottom: 1px solid #30363d;
+        border-bottom: 1px solid #e2e8f0;
     }
 
     .modal-footer {
-        border-top: 1px solid #30363d;
-    }
-
-    .btn-close {
-        filter: invert(1) grayscale(100%) brightness(200%);
+        border-top: 1px solid #e2e8f0;
     }
 
     .btn-secondary {
-        background-color: #21262d;
-        color: #c9d1d9;
-        border: 1px solid #30363d;
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        font-weight: 500;
     }
 
         .btn-secondary:hover {
-            background-color: #30363d;
-            color: #ffffff;
+            background-color: #e2e8f0;
+            color: #1e293b;
+            border-color: #94a3b8;
         }
 </style>
 
 <div class="container p-3">
     <div class="row pt-4 mb-4 align-items-center">
         <div class="col-6">
-            <h2 class="page-header"><i class="bi bi-view-list text-primary"></i> Announcement List</h2>
+            <h2 class="page-header"><i class="bi bi-view-list" style="color: #3b82f6;"></i> Announcement List</h2>
         </div>
         <div class="col-6 text-end">
             @if (User.IsInRole("Admin"))
@@ -146,7 +169,7 @@
     </div>
 
     <div class="table-container">
-        <table class="table dark-table text-center" style="width:100%">
+        <table class="table light-table text-center" style="width:100%">
             <thead>
                 <tr>
                     <th>Class Name</th>
@@ -160,13 +183,13 @@
                 @foreach (var obj in Model)
                 {
                     <tr>
-                        <td>
+                        <td style="color: #1e293b; font-weight: 500;">
                             @obj.ClassReference.Class.ClassName
                         </td>
                         <td>
-                            <span class="badge bg-secondary text-light font-monospace">@obj.ClassReference.CRN</span>
+                            <span class="badge crn-badge font-monospace">@obj.ClassReference.CRN</span>
                         </td>
-                        <td class="fw-bold">
+                        <td class="fw-bold" style="color: #1e293b;">
                             @obj.Header
                         </td>
                         <td class="text-start">
@@ -196,18 +219,18 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Warning!</h4>
+                <h4 class="modal-title text-danger fw-bold"><i class="bi bi-exclamation-triangle-fill"></i> Warning!</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to permanently delete this announcement?</p>
-                <div class="p-2 border border-secondary rounded" style="background-color: #0d1117;">
-                    <strong id="displayHeader" class="text-light"></strong>
+                <div class="p-2 border rounded text-center mt-3" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
+                    <strong id="displayHeader" style="color: #334155;"></strong>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="deleteBtn" id="confirm-delete" onclick="DeleteAnnouncement()">
+                <button type="button" class="deleteBtn" style="padding: 8px 16px;" id="confirm-delete" onclick="DeleteAnnouncement()">
                     <i class="bi bi-trash"></i> Confirm Delete
                 </button>
             </div>

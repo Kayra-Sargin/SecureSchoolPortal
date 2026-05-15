@@ -7,18 +7,40 @@
 
 <style>
     .content-card {
-        background-color: #161b22;
-        border: 1px solid #30363d;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-top: 4px solid transparent;
+        background-clip: padding-box;
         border-radius: 8px;
         padding: 32px;
         width: 100%;
         max-width: 650px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         margin-top: 10px;
+        position: relative;
     }
 
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .content-card.admin-mode::before {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .content-card.student-mode::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
         .content-card h2 {
-            color: #c9d1d9;
+            color: #1e293b;
             font-size: 1.75rem;
             margin-bottom: 20px;
             display: flex;
@@ -27,7 +49,7 @@
         }
 
         .content-card hr {
-            border-color: #30363d;
+            border-color: #e2e8f0;
             margin-bottom: 24px;
         }
 
@@ -36,31 +58,41 @@
     }
 
         .form-group .control-label {
-            color: #8b949e;
+            color: #334155;
             margin-bottom: 8px;
             font-weight: 500;
             display: block;
         }
 
     .textBox {
-        background-color: #0d1117 !important;
-        border: 1px solid #30363d;
-        color: #c9d1d9 !important;
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1;
+        color: #1e293b !important;
         border-radius: 6px;
         padding: 10px;
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
 
         .textBox:focus {
-            background-color: #0d1117;
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
             outline: none;
         }
 
+    .admin-mode .textBox:focus {
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    }
+
+    .student-mode .textBox:focus {
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+
     .read-only-box {
-        background-color: #0d1117;
-        border: 1px solid #30363d;
-        color: #c9d1d9;
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        color: #1e293b;
         border-radius: 6px;
         padding: 12px;
         font-size: 0.95rem;
@@ -68,115 +100,139 @@
     }
 
     .file-upload {
-        background-color: #0d1117;
-        border: 1px dashed #58a6ff;
-        color: #8b949e;
+        background-color: #ffffff;
+        border: 1px dashed #3b82f6;
+        color: #475569;
         border-radius: 6px;
         padding: 8px;
         width: 100%;
         transition: border-color 0.2s;
     }
 
-        .file-upload:hover {
-            border-color: #79c0ff;
-        }
+    .admin-mode .file-upload {
+        border-color: #f59e0b;
+    }
 
-        .file-upload::file-selector-button {
-            background-color: #21262d;
-            color: #c9d1d9;
-            border: 1px solid #30363d;
-            padding: 6px 14px;
-            border-radius: 4px;
-            margin-right: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s, color 0.2s;
-        }
+    .student-mode .file-upload {
+        border-color: #10b981;
+    }
 
-            .file-upload::file-selector-button:hover {
-                background-color: #30363d;
-                color: #ffffff;
-            }
+    .file-upload:hover {
+        border-color: #2563eb;
+    }
+
+    .admin-mode .file-upload:hover {
+        border-color: #d97706;
+    }
+
+    .student-mode .file-upload:hover {
+        border-color: #059669;
+    }
+
+    .file-upload::file-selector-button {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        padding: 6px 14px;
+        border-radius: 4px;
+        margin-right: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+        .file-upload::file-selector-button:hover {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
 
     .updateBtn {
-        background-color: #d29922;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
         color: #ffffff;
-        border: 1px solid rgba(240, 246, 252, 0.1);
+        border: none;
         border-radius: 6px;
         padding: 10px 24px;
         font-weight: 600;
-        transition: background-color 0.2s;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
         width: 100%;
+        box-shadow: 0 4px 6px rgba(245, 158, 11, 0.2);
     }
 
         .updateBtn:hover {
-            background-color: #e3b341;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(245, 158, 11, 0.3);
             color: #ffffff;
         }
 
     .submitBtn {
-        background-color: #238636;
+        background: linear-gradient(135deg, #10b981, #059669);
         color: #ffffff;
-        border: 1px solid rgba(240, 246, 252, 0.1);
+        border: none;
         border-radius: 6px;
         padding: 10px 24px;
         font-weight: 600;
-        transition: background-color 0.2s;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
         width: 100%;
+        box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
     }
 
         .submitBtn:hover {
-            background-color: #2ea043;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
             color: #ffffff;
         }
 
     .sys-message {
-        background-color: rgba(35, 134, 54, 0.1);
-        border: 1px solid #238636;
-        color: #3fb950;
+        background-color: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #047857;
         padding: 12px;
         border-radius: 6px;
         margin-bottom: 20px;
         font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .current-file-link {
-        color: #58a6ff;
+        color: #3b82f6;
         text-decoration: none;
         font-weight: 500;
     }
 
         .current-file-link:hover {
             text-decoration: underline;
+            color: #2563eb;
         }
 
     .backBtn {
         display: inline-block;
         margin-top: 24px;
-        color: #8b949e;
+        color: #64748b;
         text-decoration: none;
         transition: color 0.2s;
         font-weight: 500;
     }
 
         .backBtn:hover {
-            color: #58a6ff;
+            color: #3b82f6;
         }
 </style>
 
 <div class="row">
     <div class="col-12 d-flex justify-content-center">
-        <div class="content-card">
+        <div class="content-card @(isAdmin ? "admin-mode" : "student-mode")">
 
             <form method="post" asp-action="Edit" enctype="multipart/form-data">
 
                 @if (isAdmin)
                 {
-                    <h2><i class="bi bi-pencil-square text-warning"></i> Edit Assignment</h2>
+                    <h2><i class="bi bi-pencil-square" style="color: #f59e0b;"></i> Edit Assignment</h2>
                 }
                 else
                 {
-                    <h2><i class="bi bi-journal-arrow-up text-success"></i> Submit Assignment</h2>
+                    <h2><i class="bi bi-journal-arrow-up" style="color: #10b981;"></i> Submit Assignment</h2>
                 }
                 <hr />
 
@@ -185,7 +241,7 @@
                 @if (ViewBag.Message != null)
                 {
                     <div class="sys-message">
-                        <i class="bi bi-check-circle"></i> @ViewBag.Message
+                        <i class="bi bi-check-circle-fill"></i> @ViewBag.Message
                     </div>
                 }
 
@@ -238,13 +294,13 @@
 
                     @if (!string.IsNullOrEmpty(Model.AnswerFilePath))
                     {
-                        <div class="mt-3 p-2 rounded" style="background-color: rgba(139, 148, 158, 0.1); border: 1px solid #30363d;">
-                            <small class="text-muted d-block mb-1">
+                        <div class="mt-3 p-3 rounded" style="background-color: #f1f5f9; border: 1px solid #e2e8f0;">
+                            <small class="d-block mb-1" style="color: #475569;">
                                 <i class="bi bi-file-earmark-check"></i> Current file:
                                 <a href="@Model.AnswerFilePath" target="_blank" class="current-file-link">Download / View</a>
                             </small>
-                            <small class="text-warning">
-                                <i class="bi bi-exclamation-triangle"></i> <em>Note: Uploading a new file will replace the existing one.</em>
+                            <small style="color: #d97706;">
+                                <i class="bi bi-exclamation-triangle-fill"></i> <em>Note: Uploading a new file will replace the existing one.</em>
                             </small>
                         </div>
                     }
